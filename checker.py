@@ -66,6 +66,18 @@ def is_best_buy_in_stock(page):
 
     return "add to cart" in button_text
 
+def has_marketplace_listing(page):
+    text = page.locator("body").inner_text().lower()
+
+    marketplace_words = [
+        "marketplace",
+        "sold by",
+        "seller",
+        "compare all sellers",
+        "see all buying options"
+    ]
+
+    return any(word in text for word in marketplace_words)
 
 def check_product(page, product):
     print(f"\nChecking {product['name']}...")
@@ -89,9 +101,10 @@ def check_product(page, product):
 
     if store == "best buy":
         in_stock = is_best_buy_in_stock(page)
-    else:
-        text = page.locator("body").inner_text().lower()
-        in_stock = "add to cart" in text or "in stock" in text
+
+    if has_marketplace_listing(page):
+        print("Marketplace listing detected. Ignoring.")
+        return False, price
 
     return in_stock, price
 
