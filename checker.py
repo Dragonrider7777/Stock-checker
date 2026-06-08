@@ -8,9 +8,9 @@ from playwright.sync_api import sync_playwright
 
 
 def send_email_alert(product_name, url, price):
-    sender = os.environ["sona.ramratnam@gmail.com"]
-    password = os.environ["mszy lprb yffh juxc"]
-    recipient = os.environ["sona.ramratnam@gmail.com"]
+    sender = os.environ["EMAIL_USER"]
+    password = os.environ["EMAIL_PASSWORD"]
+    recipient = os.environ["EMAIL_TO"]
 
     msg = EmailMessage()
     msg["Subject"] = f"Pokemon Restock Alert: {product_name}"
