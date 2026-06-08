@@ -89,15 +89,12 @@ def check_product(page, product):
     max_price = product.get("max_price")
 
     price = get_lowest_price(page)
+    in_stock = False
 
     if price is not None:
         print(f"Lowest price found: ${price}")
     else:
         print("No price found.")
-
-    if max_price is not None and price is not None and price > max_price:
-        print(f"Too expensive: ${price} > ${max_price}")
-        return False, price
 
     if store == "best buy":
         in_stock = is_best_buy_in_stock(page)
@@ -106,8 +103,15 @@ def check_product(page, product):
             print("Marketplace listing detected. Ignoring.")
             return False, price
 
-    return in_stock, price
+    else:
+        text = page.locator("body").inner_text().lower()
+        in_stock = "add to cart" in text or "in stock" in text
 
+    if max_price is not None and price is not None and price > max_price:
+        print(f"Too expensive: ${price} > ${max_price}")
+        return False, price
+
+    return in_stock, price
 
 def main():
     with open("products.json", "r") as file:
