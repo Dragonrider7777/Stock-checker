@@ -102,9 +102,9 @@ def check_product(page, product):
     if store == "best buy":
         in_stock = is_best_buy_in_stock(page)
 
-    if has_marketplace_listing(page):
-        print("Marketplace listing detected. Ignoring.")
-        return False, price
+        if has_marketplace_listing(page):
+            print("Marketplace listing detected. Ignoring.")
+            return False, price
 
     return in_stock, price
 
