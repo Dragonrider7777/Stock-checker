@@ -21,3 +21,7 @@ jobs:
       - run: python -m playwright install chromium
 
       - run: python checker.py
+        env:
+          EMAIL_USER: ${{ secrets.EMAIL_USER }}
+          EMAIL_PASSWORD: ${{ secrets.EMAIL_PASSWORD }}
+          EMAIL_TO: ${{ secrets.EMAIL_TO }}
