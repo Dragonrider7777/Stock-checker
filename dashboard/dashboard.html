@@ -1,0 +1,107 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Pokemon Stock Dashboard</title>
+
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background: #eef3f8;
+            color: #1f2937;
+            padding: 30px;
+        }
+
+        h1 {
+            color: #21528a;
+        }
+
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            background: white;
+            border-radius: 12px;
+            overflow: hidden;
+        }
+
+        th,
+        td {
+            padding: 14px;
+            border-bottom: 1px solid #ddd;
+            text-align: left;
+        }
+
+        th {
+            background: #21528a;
+            color: white;
+        }
+
+        .good {
+            color: green;
+            font-weight: bold;
+        }
+
+        .bad {
+            color: red;
+            font-weight: bold;
+        }
+    </style>
+</head>
+
+<body>
+    <h1>Pokemon Stock Dashboard</h1>
+
+    <table>
+        <thead>
+            <tr>
+                <th>Product</th>
+                <th>Store</th>
+                <th>Price</th>
+                <th>Stock</th>
+                <th>Good Price</th>
+                <th>Last Checked</th>
+                <th>Link</th>
+            </tr>
+        </thead>
+
+        <tbody id="products"></tbody>
+    </table>
+
+    <script>
+        async function loadDashboard() {
+            const response = await fetch("../data/dashboard.json");
+            const products = await response.json();
+
+            const tbody = document.getElementById("products");
+            tbody.innerHTML = "";
+
+            products.forEach(product => {
+                const row = document.createElement("tr");
+
+                row.innerHTML = `
+          <td>${product.name}</td>
+          <td>${product.store}</td>
+          <td>${product.price ? "$" + product.price : "No price"}</td>
+          <td class="${product.in_stock ? "good" : "bad"}">
+            ${product.in_stock ? "In stock" : "Out of stock"}
+          </td>
+          <td class="${product.good_price ? "good" : "bad"}">
+            ${product.good_price ? "Yes" : "No"}
+          </td>
+          <td>${product.checked_at}</td>
+          <td>
+            <a href="${product.url}" target="_blank">Open</a>
+          </td>
+        `;
+
+                tbody.appendChild(row);
+            });
+        }
+
+        loadDashboard();
+    </script>
+</body>
+
+</html>
