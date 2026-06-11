@@ -18,12 +18,3 @@ OUT_OF_STOCK_WORDS = [
     "unavailable",
     "currently unavailable"
 ]
-
-MARKETPLACE_WORDS = [
-    "sold by",
-    "marketplace",
-    "third-party",
-    "seller",
-    "fulfilled by",
-    "shipped by"
-]

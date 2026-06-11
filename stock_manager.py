@@ -32,6 +32,8 @@ def process_product(page, product):
             "max_price": product["max_price"],
             "in_stock": raw_result["in_stock"],
             "marketplace": raw_result["marketplace"],
+            "seller": raw_result.get("seller"),
+            "seller_reason": raw_result.get("seller_reason"),
             "checked_at": datetime.now().strftime("%Y-%m-%d %H:%M:%S"),
         }
 
@@ -46,6 +48,8 @@ def process_product(page, product):
         print(f"In stock: {result['in_stock']}")
         print(f"Good price: {result['good_price']}")
         print(f"Marketplace: {result['marketplace']}")
+        print(f"Seller: {result['seller']}")
+        print(f"Seller reason: {result['seller_reason']}")
 
         # Save history
         add_to_history(HISTORY_FILE, result)

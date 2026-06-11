@@ -2,19 +2,25 @@
   {
     "name": "Ascended Heroes Pokemon Center ETB",
     "url": "https://www.pokemoncenter.com/product/10-10315-108/pokemon-tcg-mega-evolution-ascended-heroes-pokemon-center-elite-trainer-box",
-    "store": "Pokemon Center",
-    "max_price": 69.99
+    "store": "pokemon_center",
+    "max_price": 69.99,
+    "allowed_sellers": ["Pokemon Center"],
+    "blocked_sellers": []
   },
   {
-    "name": "Ascended Heroes Best Buy ETB",
+    "name": "Ascended Heroes ETB",
     "url": "https://www.bestbuy.com/product/pokemon-trading-card-game-mega-evolution-ascended-heroes-elite-trainer-box/JJG2TLXSFV",
-    "store": "Best Buy",
-    "max_price": 59.99
+    "store": "bestbuy",
+    "allowed_sellers": ["Best Buy"],
+    "blocked_sellers": ["SwiftSpend"],
+    "max_price": 60.0
   },
   {
     "name": "Ascended Heroes Booster Bundle",
     "url": "https://www.bestbuy.com/product/pokemon-trading-card-game-mega-evolution-ascended-heroes-booster-bundle/JJG2TL3JP8",
-    "store": "Best Buy",
-    "max_price": 29.99
+    "store": "bestbuy",
+    "max_price": 29.99,
+    "allowed_sellers": ["Best Buy"],
+    "blocked_sellers": ["SwiftSpend"]
   }
 ]
