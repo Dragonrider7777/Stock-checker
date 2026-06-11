@@ -9,15 +9,15 @@
   },
   {
     "name": "Ascended Heroes ETB",
-    "url": "https://www.bestbuy.com/product/pokemon-trading-card-game-mega-evolution-ascended-heroes-elite-trainer-box/JJG2TLXSFV",
     "store": "bestbuy",
+    "sku": "12708764",
     "allowed_sellers": ["Best Buy"],
     "blocked_sellers": ["SwiftSpend"],
     "max_price": 60.0
   },
   {
     "name": "Ascended Heroes Booster Bundle",
-    "url": "https://www.bestbuy.com/product/pokemon-trading-card-game-mega-evolution-ascended-heroes-booster-bundle/JJG2TL3JP8",
+    "sku": "12615273",
     "store": "bestbuy",
     "max_price": 29.99,
     "allowed_sellers": ["Best Buy"],

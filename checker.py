@@ -2,6 +2,7 @@ from playwright.sync_api import sync_playwright
 from utils.json_utils import load_products
 from stock_manager import process_product
 
+
 def main():
     products = load_products()
 
@@ -13,6 +14,7 @@ def main():
             process_product(page, product)
 
         browser.close()
+
 
 if __name__ == "__main__":
     main()

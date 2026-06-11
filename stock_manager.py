@@ -9,8 +9,9 @@ from config.settings import STATE_FILE, DASHBOARD_FILE, HISTORY_FILE
 STORE_CHECKERS = {
     "bestbuy": bestbuy.check,
     "pokemon_center": pokemon_center.check,
-    "generic": generic.check
+    "generic": generic.check,
 }
+
 
 def process_product(page, product):
     print(f"\nChecking {product['name']}...")
@@ -27,7 +28,7 @@ def process_product(page, product):
         result = {
             "name": product["name"],
             "store": product["store"],
-            "url": product["url"],
+            "url": raw_result.get("product_url", product.get("url")),
             "price": raw_result["price"],
             "max_price": product["max_price"],
             "in_stock": raw_result["in_stock"],
@@ -38,8 +39,7 @@ def process_product(page, product):
         }
 
         result["good_price"] = (
-            result["price"] is not None
-            and result["price"] <= result["max_price"]
+            result["price"] is not None and result["price"] <= result["max_price"]
         )
 
         old_result = state.get(product["name"])
@@ -59,13 +59,10 @@ def process_product(page, product):
             send_alert(product, result)
         else:
             print("No alert needed.")
-        
+
         state[product["name"]] = result
 
-        dashboard = [
-            item for item in dashboard
-            if item["name"] != product["name"]
-        ]
+        dashboard = [item for item in dashboard if item["name"] != product["name"]]
         dashboard.append(result)
 
         save_json(STATE_FILE, state)
@@ -73,21 +70,21 @@ def process_product(page, product):
 
     except Exception as e:
         print(f"Error checking{product['name']}: {e}")
-        
+
 
 def should_alert(old_result, new_result):
     if new_result["marketplace"]:
         return False
-    
+
     if not new_result["in_stock"]:
         return False
-    
+
     if not new_result["good_price"]:
         return False
-    
+
     if old_result is None:
         return True
-    
+
     became_in_stock = not old_result.get("in_stock") and new_result["in_stock"]
     became_good_price = not old_result.get("good_price") and new_result["good_price"]
 
@@ -95,11 +92,7 @@ def should_alert(old_result, new_result):
     new_price = new_result.get("price")
 
     price_dropped = (
-        old_price is not None
-        and new_price is not None
-        and new_price < old_price
+        old_price is not None and new_price is not None and new_price < old_price
     )
 
     return became_in_stock or became_good_price or price_dropped
-
-

@@ -13,5 +13,5 @@ def check(page, product):
         "in_stock": get_stock_status(text),
         "marketplace": False,
         "seller": "Pokemon Center",
-        "seller_reason": "Official store"
+        "seller_reason": "Official store",
     }

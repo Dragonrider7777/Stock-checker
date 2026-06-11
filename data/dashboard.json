@@ -1,5 +1,18 @@
 [
   {
+    "name": "Ascended Heroes ETB",
+    "store": "bestbuy",
+    "url": "https://www.bestbuy.com/product/pokemon-trading-card-game-mega-evolution-ascended-heroes-elite-trainer-box/JJG2TLXSFV",
+    "price": 239.99,
+    "max_price": 60.0,
+    "in_stock": true,
+    "marketplace": true,
+    "seller": "Collectors Emporium",
+    "seller_reason": "Seller not in allowed list",
+    "checked_at": "2026-06-10 21:28:29",
+    "good_price": false
+  },
+  {
     "name": "Ascended Heroes Booster Bundle",
     "store": "bestbuy",
     "url": "https://www.bestbuy.com/product/pokemon-trading-card-game-mega-evolution-ascended-heroes-booster-bundle/JJG2TL3JP8",
@@ -9,7 +22,7 @@
     "marketplace": true,
     "seller": "SwiftSpend",
     "seller_reason": "Blocked seller",
-    "checked_at": "2026-06-10 21:12:09",
+    "checked_at": "2026-06-10 21:28:44",
     "good_price": false
   },
   {
@@ -22,20 +35,7 @@
     "marketplace": false,
     "seller": "Pokemon Center",
     "seller_reason": "Official store",
-    "checked_at": "2026-06-10 21:13:13",
-    "good_price": false
-  },
-  {
-    "name": "Ascended Heroes ETB",
-    "store": "bestbuy",
-    "url": "https://www.bestbuy.com/product/pokemon-trading-card-game-mega-evolution-ascended-heroes-elite-trainer-box/JJG2TLXSFV",
-    "price": 239.99,
-    "max_price": 60.0,
-    "in_stock": true,
-    "marketplace": true,
-    "seller": "Collectors Emporium",
-    "seller_reason": "Seller not in allowed list",
-    "checked_at": "2026-06-10 21:13:31",
+    "checked_at": "2026-06-10 21:43:13",
     "good_price": false
   }
 ]

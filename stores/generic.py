@@ -16,5 +16,5 @@ def check(page, product):
         "in_stock": get_stock_status(text),
         "marketplace": not allowed,
         "seller": seller,
-        "seller_reason": seller_reason
+        "seller_reason": seller_reason,
     }

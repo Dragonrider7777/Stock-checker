@@ -9,7 +9,7 @@
     "marketplace": false,
     "seller": "Pokemon Center",
     "seller_reason": "Official store",
-    "checked_at": "2026-06-10 21:13:13",
+    "checked_at": "2026-06-10 21:43:13",
     "good_price": false
   },
   "Ascended Heroes ETB": {
@@ -22,7 +22,7 @@
     "marketplace": true,
     "seller": "Collectors Emporium",
     "seller_reason": "Seller not in allowed list",
-    "checked_at": "2026-06-10 21:13:31",
+    "checked_at": "2026-06-10 21:28:29",
     "good_price": false
   },
   "Ascended Heroes Booster Bundle": {
@@ -35,7 +35,7 @@
     "marketplace": true,
     "seller": "SwiftSpend",
     "seller_reason": "Blocked seller",
-    "checked_at": "2026-06-10 21:12:09",
+    "checked_at": "2026-06-10 21:28:44",
     "good_price": false
   }
 }
