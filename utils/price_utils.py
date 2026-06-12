@@ -1,30 +1,31 @@
 import re
 
 
+def clean_price_string(price_text):
+    return float(price_text.replace(",", ""))
+
+
 def get_price(text):
-    lower_text = text.lower()
+    # Match prices like:
+    # $114.95
+    # $60
+    # $1,299.99
+    raw_prices = re.findall(r"\$([0-9,]+(?:\.[0-9]{2})?)", text)
 
-    # Remove playment plan / financing sections
-    bad_patterns = [
-        r"\d+\spayments\s+starting\s+at\s+$[0-9]+(?:\.[0-9]{2})?",
-        r"starting\s+at\s+\$[0-9]+(?:\.[0-9]{2})?",
-        r"\$[0-9]+(?:\.[0-9]{2})?\s+with\s+zip",
-        r"finance options.*",
-    ]
+    if not raw_prices:
+        return None
 
-    for pattern in bad_patterns:
-        lower_text = re.sub(pattern, "", lower_text)
+    prices = []
 
-    prices = re.findall(r"\$([0-9]+(?:\.[0-9]{2})?)", lower_text)
+    for raw_price in raw_prices:
+        price = clean_price_string(raw_price)
+
+        # Ignore tiny payment-plan numbers like $4.05, but keep real Pokemon product prices
+        if 10 <= price <= 300:
+            prices.append(price)
 
     if not prices:
         return None
 
-    prices = [float(price) for price in prices]
-
-    realistic_prices = [price for price in prices if 5 <= price <= 300]
-
-    if not realistic_prices:
-        return None
-
-    return min(realistic_prices)
+    # Payment plans are usually smaller, real reseller price is usually largest on page
+    return max(prices)

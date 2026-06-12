@@ -1,19 +1,71 @@
-from playwright.sync_api import sync_playwright
-from utils.json_utils import load_products
-from stock_manager import process_product
+import json
+from providers.walmart import check_walmart
+
+# from providers.bestbuy import check_bestbuy
+
+PROVIDERS = {
+    "walmart": check_walmart,
+    # "bestbuy": check_bestbuy,
+}
+
+
+def seller_allowed(result, store_config):
+    seller = (result.get("seller") or "").lower()
+
+    allowed = [s.lower() for s in store_config.get("allowed_sellers", [])]
+    blocked = [s.lower() for s in store_config.get("blocked_sellers", [])]
+
+    if any(b in seller for b in blocked):
+        return False
+
+    if allowed:
+        return any(a in seller for a in allowed)
+
+    return True
+
+
+def should_alert(product, store_config, result):
+    if not result.get("in_stock"):
+        return False
+
+    if result.get("price") is None:
+        return False
+
+    if result["price"] > product["max_price"]:
+        return False
+
+    if not seller_allowed(result, store_config):
+        return False
+
+    return True
 
 
 def main():
-    products = load_products()
+    with open("products.json", "r") as f:
+        products = json.load(f)
 
-    with sync_playwright() as p:
-        browser = p.chromium.launch(headless=True)
-        page = browser.new_page()
+    for product in products:
+        print(f"\nChecking {product['name']}...")
 
-        for product in products:
-            process_product(page, product)
+        for store_name, store_config in product["stores"].items():
+            if store_name not in PROVIDERS:
+                print(f"Skipping {store_name}: no provider yet")
+                continue
 
-        browser.close()
+            print(f"Checking {store_name}...")
+
+            try:
+                result = PROVIDERS[store_name](product, store_config)
+
+                print("Result:", result)
+
+                if should_alert(product, store_config, result):
+                    print("ALERT!")
+                else:
+                    print("No alert.")
+
+            except Exception as e:
+                print(f"Error checking {store_name}: {e}")
 
 
 if __name__ == "__main__":

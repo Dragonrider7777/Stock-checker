@@ -1,26 +1,22 @@
 [
   {
-    "name": "Ascended Heroes Pokemon Center ETB",
-    "url": "https://www.pokemoncenter.com/product/10-10315-108/pokemon-tcg-mega-evolution-ascended-heroes-pokemon-center-elite-trainer-box",
-    "store": "pokemon_center",
-    "max_price": 69.99,
-    "allowed_sellers": ["Pokemon Center"],
-    "blocked_sellers": []
-  },
-  {
     "name": "Ascended Heroes ETB",
-    "store": "bestbuy",
-    "sku": "12708764",
-    "allowed_sellers": ["Best Buy"],
-    "blocked_sellers": ["SwiftSpend"],
-    "max_price": 60.0
-  },
-  {
-    "name": "Ascended Heroes Booster Bundle",
-    "sku": "12615273",
-    "store": "bestbuy",
-    "max_price": 29.99,
-    "allowed_sellers": ["Best Buy"],
-    "blocked_sellers": ["SwiftSpend"]
+    "product_type": "Elite Trainer Box",
+    "max_price": 59.99,
+
+    "stores": {
+      "bestbuy": {
+        "url": "https://www.bestbuy.com/product/pokemon-trading-card-game-mega-evolution-ascended-heroes-elite-trainer-box/JJG2TLXSFV",
+        "sku": "12267167",
+        "allowed_sellers": ["Best Buy"],
+        "blocked_sellers": ["SwiftSpend", "CARD DOG TCG"]
+      },
+      "walmart": {
+        "url": "https://www.walmart.com/ip/Pokemon-TCG-Mega-Evolution-Ascended-Heroes-Elite-Trainer-Box-ETB/19631203263",
+        "item_id": "19631203263",
+        "allowed_sellers": ["Walmart", "Walmart.com"],
+        "blocked_sellers": []
+      }
+    }
   }
 ]

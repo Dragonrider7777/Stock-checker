@@ -1,0 +1,351 @@
+Yes. Here’s the best order.
+
+## Phase 1 — Make it reliable before making it bigger
+
+### 1. Go back to direct links + SKU verification
+
+For Best Buy, use:
+
+```txt
+url = exact page to open
+sku = proof that page is correct
+```
+
+Do **not** scrape the Best Buy SKU search page as the main source.
+
+Your product should look like:
+
+```json
+{
+  "name": "Ascended Heroes Booster Bundle",
+  "store": "bestbuy",
+  "sku": "12615273",
+  "url": "https://www.bestbuy.com/site/.../12615273.p",
+  "max_price": 29.99,
+  "allowed_sellers": ["Best Buy"],
+  "blocked_sellers": [
+    "SwiftSpend",
+    "Collectors Emporium",
+    "Shazaar",
+    "CARD DOG TCG"
+  ]
+}
+```
+
+This should be your first fix.
+
+---
+
+### 2. Make unknown seller unsafe
+
+Right now:
+
+```txt
+Seller: None
+Marketplace: False
+```
+
+should become:
+
+```txt
+Seller: None
+Marketplace: True
+Seller reason: Could not verify seller
+```
+
+A paid bot would rather miss one listing than alert you for a bad reseller.
+
+---
+
+### 3. Stop using one generic price finder
+
+Each store needs its own price logic.
+
+Your structure should be:
+
+```txt
+stores/bestbuy.py
+stores/target.py
+stores/walmart.py
+stores/gamestop.py
+stores/pokemon_center.py
+```
+
+Each file should answer:
+
+```txt
+What is the exact product price?
+Who is selling it?
+Is it actually in stock?
+Is this the correct product?
+```
+
+Not just “what words/prices exist on the page?”
+
+---
+
+## Phase 2 — Add serious debugging
+
+### 4. Save screenshots and page text every run
+
+For every product, save:
+
+```txt
+data/debug/screenshots/
+data/debug/text/
+```
+
+This lets you inspect what the bot actually saw.
+
+Paid bots are better because their creators have debugged thousands of weird pages. You need your own debugging system.
+
+---
+
+### 5. Add “reason” fields
+
+Every product result should include:
+
+```txt
+price_reason
+stock_reason
+seller_reason
+ignored_reason
+confidence
+```
+
+Example:
+
+```txt
+Price: 114.95
+Price reason: Found near main product price area
+Seller: SwiftSpend
+Seller reason: Blocked seller
+Ignored reason: Seller not allowed
+Confidence: 90
+```
+
+This makes your bot smarter and easier to fix.
+
+---
+
+## Phase 3 — Expand stores slowly
+
+### 6. Add stores in this order
+
+Best order:
+
+```txt
+1. Best Buy
+2. Pokémon Center
+3. GameStop
+4. Target
+5. Walmart
+6. Amazon
+```
+
+Do not add 30 products at once. Add one store, make it reliable, then move on.
+
+---
+
+### 7. Use each store’s identifier
+
+Use:
+
+```txt
+Best Buy: SKU
+Target: TCIN
+Walmart: item ID
+GameStop: product ID or URL
+Pokemon Center: URL
+```
+
+But identifiers should verify products, not always replace URLs.
+
+---
+
+## Phase 4 — Make it fast
+
+### 8. Add parallel checking
+
+Right now your bot probably checks:
+
+```txt
+Product 1 → Product 2 → Product 3
+```
+
+Eventually it should check multiple products at once:
+
+```txt
+Product 1
+Product 2
+Product 3
+Product 4
+```
+
+This is one of the biggest differences between your bot and Discord bots.
+
+But do this only after reliability is better.
+
+---
+
+### 9. Add smart checking intervals
+
+Use different frequencies:
+
+```txt
+High priority products: every 2–5 minutes
+Normal products: every 10–15 minutes
+Low priority products: every 30–60 minutes
+```
+
+Do not check everything equally.
+
+---
+
+## Phase 5 — Make alerts better than paid bots
+
+### 10. Improve Discord alerts
+
+Your alert should include:
+
+```txt
+Product image
+Store
+Price
+Seller
+Stock status
+Max price
+Buy link
+Why it alerted
+```
+
+Example:
+
+```txt
+🚨 Ascended Heroes Booster Bundle
+
+Store: Best Buy
+Price: $29.99
+Seller: Best Buy
+Status: Add to cart
+Reason: In stock + below max price
+
+Buy:
+link
+```
+
+---
+
+### 11. Add alert cooldowns
+
+Prevent spam:
+
+```txt
+Only alert again if:
+- price changes
+- stock changes
+- seller changes
+- 30+ minutes passed
+```
+
+---
+
+## Phase 6 — Make it feel professional
+
+### 12. Build a dashboard
+
+Your dashboard should show:
+
+```txt
+Product
+Store
+Price
+Seller
+Stock
+Last checked
+Last alert
+Ignored reason
+Confidence
+```
+
+This turns your script into an actual monitoring app.
+
+---
+
+### 13. Add logs
+
+Use Python’s `logging` instead of only `print()`.
+
+Save logs like:
+
+```txt
+logs/checker.log
+```
+
+So when something breaks overnight, you know why.
+
+---
+
+## Phase 7 — Advanced future upgrade
+
+### 14. Learn Network tab/API scraping
+
+This is probably what many serious bots do.
+
+Instead of reading visible page text, they inspect browser network requests and find product data like:
+
+```json
+{
+  "price": 114.95,
+  "availability": "IN_STOCK",
+  "seller": "SwiftSpend"
+}
+```
+
+That is much more accurate than scraping visible text.
+
+This is advanced, but it is the path toward Discord-bot-level accuracy.
+
+---
+
+## Your best next 5 moves
+
+Do these in this exact order:
+
+```txt
+1. Best Buy: switch back to direct URL + SKU verification
+2. Make unknown seller unsafe
+3. Add debug screenshots + debug text files
+4. Make Best Buy its own strict extractor, not generic text scanning
+5. Add better Discord alerts with price, seller, reason, and link
+```
+
+Your goal is not “monitor more products” yet.
+
+Your goal is:
+
+```txt
+When the bot gives a result, I trust it.
+```
+
+Once you trust the results, then scale to more stores and more products.
+
+{
+"name": "Ascended Heroes Pokemon Center ETB",
+"url": "https://www.pokemoncenter.com/product/10-10315-108/pokemon-tcg-mega-evolution-ascended-heroes-pokemon-center-elite-trainer-box",
+"store": "pokemon_center",
+"max_price": 69.99,
+"allowed_sellers": ["Pokemon Center"],
+"blocked_sellers": []
+},
+
+    {
+    "name": "Ascended Heroes Booster Bundle",
+    "store": "bestbuy",
+    "sku": "12615273",
+    "url": "https://www.bestbuy.com/product/pokemon-trading-card-game-mega-evolution-ascended-heroes-booster-bundle/JJG2TL3JP8",
+    "max_price": 29.99,
+    "allowed_sellers": ["Best Buy"],
+    "blocked_sellers": ["SwiftSpend", "Collectors Emporium"]
+
+}
