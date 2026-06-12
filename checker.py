@@ -1,5 +1,10 @@
+from dotenv import load_dotenv
+
+load_dotenv()
+
 import json
 from providers.walmart import check_walmart
+from alerts.alert_manager import send_alert
 
 # from providers.bestbuy import check_bestbuy
 
@@ -25,18 +30,29 @@ def seller_allowed(result, store_config):
 
 
 def should_alert(product, store_config, result):
+    print("DEBUG in_stock:", result.get("in_stock"))
+    print("DEBUG price:", result.get("price"))
+    print("DEBUG max_price:", product.get("max_price"))
+    print("DEBUG seller:", result.get("seller"))
+    print("DEBUG allowed_sellers:", store_config.get("allowed_sellers"))
+
     if not result.get("in_stock"):
+        print("FAILED: not in stock")
         return False
 
     if result.get("price") is None:
+        print("FAILED: no price")
         return False
 
     if result["price"] > product["max_price"]:
+        print("FAILED: price too high")
         return False
 
     if not seller_allowed(result, store_config):
+        print("FAILED: seller not allowed")
         return False
 
+    print("PASSED: should alert")
     return True
 
 
@@ -61,6 +77,7 @@ def main():
 
                 if should_alert(product, store_config, result):
                     print("ALERT!")
+                    send_alert(product, result)
                 else:
                     print("No alert.")
 
